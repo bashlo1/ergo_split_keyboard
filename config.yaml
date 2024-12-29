@@ -1,0 +1,153 @@
+units:
+  # Proxy Spacing Variables
+  kx: cx
+  ky: cy
+  # Padding Variables
+  px: kx + 4
+  py: ky + 4
+  # OLED Variables
+  mx: 25
+  my: -9
+  ox: mx - 6
+  oy: my -19
+
+points:
+  zones:
+
+    matrix:
+      columns:
+        outer:
+          key:
+            column_net: P011
+        pinky:
+          key:
+            splay: -0.5
+            column_net: P100
+        ring:
+          key:
+            stagger: 12
+            splay: -0.5
+            column_net: P024
+        middle:
+          key:
+            stagger: 7
+            column_net: P022
+        index:
+          key:
+            stagger: -6
+            column_net: P006
+        inner:
+          key:
+            stagger: -2.5
+            splay: -0.5
+            column_net: P008
+      rows:
+        bottom:
+          row_net: P002
+        home:
+          row_net: P115
+        top:
+          row_net: P106
+        num:
+          row_net: P104
+
+    thumb:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [-38, -19]
+      columns:
+        control:
+          key:
+            column_net: P022
+        option:
+          key:
+            shift: [1.5,-1]
+            rotate: -4
+            column_net: P006
+        command:
+          key:
+            shift: [3.5,-5]
+            rotate: -16
+            column_net: P008
+        space:
+          key:
+            shift: [6.8,-9]
+            rotate: -28
+            height: 1.5kx
+            column_net: P029
+      rows:
+        mod:
+          row_net: P031
+
+
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      bound: true
+      size: [px, py]
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      size: [kx-0.5, ky-0.5]
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: matrix_outer_num
+          shift: [-0.5px,0.5py]
+        - ref: matrix_pinky_num
+          shift: [0.4px,0.5py]
+        - ref: matrix_ring_num
+          shift: [-0.5px,0.5py]
+        - ref: matrix_ring_num
+          shift: [0.38px,0.5py]
+        - ref: matrix_middle_num
+          shift: [-0.5px,0.5py]
+        - ref: matrix_middle_num
+          shift: [0.5px,0.5py]
+        - ref: matrix_index_num
+          shift: [-0.38px,0.5py]
+        - ref: matrix_index_num
+          shift: [0.5px,0.5py]
+        - ref: matrix_inner_num
+          shift: [-0.38px,0.5py]
+        - ref: matrix_inner_num
+          shift: [1.8px,0.5py]
+        - ref: thumb_space_mod
+          shift: [0.52px,0.4py]
+        - ref: thumb_space_mod
+          shift: [0.5px,-0.5py]
+        - ref: thumb_control_mod
+          shift: [-0.5px,-0.5py]
+        - ref: thumb_control_mod
+          shift: [-0.5px,-0.18py]
+        - ref: matrix_outer_bottom
+          shift: [-0.5px,-0.5py]
+      fillet: 2
+  combo:
+    - name: board
+    - operation: subtract
+      name: keys
+
+pcbs:
+  ergo_key:
+    outlines:
+      main:
+        outline: board
+    footprints:
+      mx_hotswap:
+        what: mx
+        where: true
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+          
+cases:
+  plate:
+    - name: combo
+      extrude: 1.2
